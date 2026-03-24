@@ -6,15 +6,56 @@ import {
     StyleSheet
 } from 'react-native';
 
+import { useState } from "react";
+import Toast from 'react-native-toast-message';
+//npm install react-native-toast-message
+
 export default function Login(){
+
+    const [usuario, setUsuario] = useState("");
+    const [senha, setSenha] = useState("");
+
+    const validaLogin = () =>{
+        if(usuario == "admin" && senha == "admin"){
+            alert("Sucesso!");
+            Toast.show({
+                type: 'success',
+                text1: 'Sucesso!',
+                text2: 'Campeão Vencedor!'
+            });
+        }else{
+            alert("Usuário ou senha inválidos!")
+            Toast.show({
+                type: 'error',
+                text1: 'Erro!',
+                text2: 'Usuário ou senha inválidos.'
+            })
+        }
+    }
+
     return(
         <View style={styles.container}>
             <Text style={styles.titulo}>Área Restrita</Text>
-            <TextInput style={styles.input} />
-            <TextInput style={styles.input} secureTextEntry={true} />
-            <TouchableOpacity style={styles.botao}>
+            
+            <TextInput 
+                style={styles.input} 
+                value={usuario}
+                onChangeText={setUsuario}
+            />
+
+            <TextInput 
+                style={styles.input} 
+                secureTextEntry={true} 
+                value={senha}
+                onChangeText={setSenha}
+            />
+            
+            <TouchableOpacity style={styles.botao} onPress={validaLogin}>
                 <Text style={styles.titulo}>Fazer Login</Text>
             </TouchableOpacity>
+
+            <Toast />
+            
         </View>
     );
 }
