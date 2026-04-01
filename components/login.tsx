@@ -19,25 +19,7 @@ export default function Login() {
     const [senha, setSenha] = useState("");
     const [loading, setLoading] = useState(false)
 
-    // const validaLogin = () =>{
-    //     if(usuario == "admin" && senha == "admin"){
-    //         alert("Sucesso!");
-    //         Toast.show({
-    //             type: 'success',
-    //             text1: 'Sucesso!',
-    //             text2: 'Campeão Vencedor!'
-    //         });
-    //     }else{
-    //         alert("Usuário ou senha inválidos!")
-    //         Toast.show({
-    //             type: 'error',
-    //             text1: 'Erro!',
-    //             text2: 'Usuário ou senha inválidos.'
-    //         })
-    //     }
-    // }
-
-    async function signInWithEmail() {
+    async function validaLogin() {
         setLoading(true)
         const { error } = await supabase.auth.signInWithPassword({
             email: usuario,
@@ -49,30 +31,11 @@ export default function Login() {
                 text1: 'Erro!',
                 text2: 'Usuário ou senha inválidos.'
             })
-        }
-        setLoading(false)
-    }
-    async function signUpWithEmail() {
-        setLoading(true)
-        const {
-            data: { session },
-            error,
-        } = await supabase.auth.signUp({
-            email: usuario,
-            password: senha,
-        })
-        if (error) {
+        }else{
             Toast.show({
-                type: 'error',
-                text1: 'Erro!',
-                text2: 'Usuário ou senha inválidos.'
-            })
-        }
-        if (!session) {
-            Toast.show({
-                type: 'error',
-                text1: 'Erro!',
-                text2: 'Usuário ou senha inválidos.'
+                type: 'success',
+                text1: 'Sucesso!',
+                text2: 'Login realizado com sucesso.'
             })
         }
         setLoading(false)
@@ -94,11 +57,8 @@ export default function Login() {
                 value={senha}
                 onChangeText={setSenha}
             />
-            <TouchableOpacity
-                onPress={() => signInWithEmail()}
-                disabled={loading}
-            ></TouchableOpacity>
-            <TouchableOpacity style={styles.botao} onPress={signUpWithEmail}>
+
+            <TouchableOpacity style={[styles.botao, loading && styles.desabilitado]} onPress={validaLogin}>
                 <Text style={styles.titulo}>Fazer Login</Text>
             </TouchableOpacity>
 
@@ -138,5 +98,8 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 10,
         alignItems: 'center'
+    },
+    desabilitado:{
+        opacity: 0.5,
     }
 })
