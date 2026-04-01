@@ -11,6 +11,8 @@ import Toast from 'react-native-toast-message';
 
 import { supabase } from '../lib/supabase';
 
+import { router } from 'expo-router';
+
 //npm install react-native-toast-message
 
 export default function Login() {
@@ -37,6 +39,7 @@ export default function Login() {
                 text1: 'Sucesso!',
                 text2: 'Login realizado com sucesso.'
             })
+            router.replace('/(tabs)');
         }
         setLoading(false)
     }
