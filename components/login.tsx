@@ -1,19 +1,8 @@
-import {
-    View,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    StyleSheet
-} from 'react-native';
-
+import {    View,    Text,    TextInput,    TouchableOpacity,    StyleSheet} from 'react-native';
 import { useState } from "react";
 import Toast from 'react-native-toast-message';
-
 import { supabase } from '../lib/supabase';
-
 import { router } from 'expo-router';
-
-//npm install react-native-toast-message
 
 export default function Login() {
 
@@ -23,10 +12,12 @@ export default function Login() {
 
     async function validaLogin() {
         setLoading(true)
+
         const { error } = await supabase.auth.signInWithPassword({
             email: usuario,
             password: senha,
         })
+
         if (error){
             Toast.show({
                 type: 'error',
@@ -34,13 +25,9 @@ export default function Login() {
                 text2: 'Usuário ou senha inválidos.'
             })
         }else{
-            Toast.show({
-                type: 'success',
-                text1: 'Sucesso!',
-                text2: 'Login realizado com sucesso.'
-            })
             router.replace('/(tabs)');
         }
+        
         setLoading(false)
     }
 
