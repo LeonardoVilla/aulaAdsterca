@@ -20,7 +20,7 @@ export default function Consultar(){
 
         setAlunos(data || []);
     }
-
+    // 05 de Maio de 2026
     return(
         <View style={styles.container}>
             <Text>Consultar Alunos</Text>
