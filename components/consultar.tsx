@@ -3,8 +3,15 @@ import { useEffect, useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import { View, Text, FlatList, StyleSheet } from "react-native";
 
+interface Aluno{
+    id: number;
+    nome: string;
+    idade: number;
+    email: string;
+}
+
 export default function Consultar(){
-    const [alunos, setAlunos] = useState<any[]>([]);
+    const [alunos, setAlunos] = useState<Aluno[]>([]);
     const isFocused = useIsFocused();
 
     useEffect(() => {
