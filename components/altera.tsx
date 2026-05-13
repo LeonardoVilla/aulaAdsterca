@@ -6,18 +6,50 @@ import {
     StyleSheet
 } from 'react-native';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Toast from 'react-native-toast-message';
 import { supabase } from '@/lib/supabase';
+import { useIsFocused } from "@react-navigation/native";
+import { useLocalSearchParams } from "expo-router";
 
-export default function Cadastro() {
+export default function Altera() {
 
     const [nome, setNome] = useState("");
     const [idade, setIdade] = useState("");
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false)
 
-    async function cadastrarAluno() {
+    const isFocused = useIsFocused();
+
+    useEffect(() => {
+        if(isFocused){
+            carregarAlunos();
+        }
+    }, [isFocused]);
+
+    const { id } = useLocalSearchParams();
+
+    async function carregarAlunos(){
+        const { data, error } = await supabase
+            .from('tb_alunos')
+            .select()
+            .eq('id', id)
+            .single()
+        
+        if(error){
+            Toast.show({
+                type: 'error',
+                text1: 'Erro! ' + id,
+                text2: 'Erro ao carregar aluno.'
+            })
+        }else{
+            setNome(data.nome ?? "");
+            setIdade(data.idade ?? "");
+            setEmail(data.email ?? "");
+        }
+    }
+
+    async function alterarAluno() {
         setLoading(true)
 
         const { data, error } = await supabase
@@ -47,7 +79,7 @@ export default function Cadastro() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.titulo}>Área Restrita</Text>
+            <Text style={styles.titulo}>Alterar Aluno</Text>
 
             <TextInput
                 style={styles.input}
@@ -70,8 +102,8 @@ export default function Cadastro() {
                 placeholder='Email do aluno'
             />
 
-            <TouchableOpacity style={[styles.botao, loading && styles.desabilitado]} onPress={cadastrarAluno}>
-                <Text style={styles.titulo}>Cadastrar</Text>
+            <TouchableOpacity style={[styles.botao, loading && styles.desabilitado]} onPress={alterarAluno}>
+                <Text style={styles.titulo}>Alterar</Text>
             </TouchableOpacity>
 
             <Toast />
